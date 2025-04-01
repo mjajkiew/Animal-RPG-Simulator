@@ -1,17 +1,21 @@
-## M1OEP-mjajkiew
+## By Michael Jajkiewicz
 ________________________________
-# CS 2300 Module 2 Open Project
+# Elite Animals RPG Simulator
 
     
-My open project is an RPG battle simulator. The player chooses from one of (currently) two animal characters, using combat similar to Pokemon. 
-Each character has two abilities, melee and special, as well as having a pick between three actions: sword, shield, and magic. 
+An RPG simulator based in the console with multiple animal characters, with common RPG mechanics such as multiple types of moves and MP. 
+Each character has three abilities, melee, special, and support, as well as having a pick between three actions: sword, shield, and magic. 
 In a rock/paper/scissors type standoff, whoever wins gains a special buff corresponding to what they chose. In battle, sword beats magic, magic beats shield, and shield beats sword.
 If the player chose magic, they gain some health back, if they choose sword, they do extra damage, and if they choose shield, incoming damage is divided.
+The winner of the rock/paper/scissors standoff also takes their turn first.
+Melee attacks cover a range of attack damage that can skew up or down randomly throughout the match.
+Special attacks work like they do in many other RPGs, with a limited amount of uses, with each use draining MP.
+Support moves increase HP or Special MP, with its uses also limited by its own MP.
 
-I'm using the code from module 1, and expanding on it. Using inheritance, I'm making the Character_Ability class abstract and creating new 
-types of moves (separating abilities into melee / special / support). Before, I just used a general "Character_Ability" class which covered every type of move. 
-I'm also making melee combat more complex, having a range of dmg a move is able to deal, along with a mechanic of it skewing higher or lower, as opposed to static amount of damage. 
-There is also a character select screen with multiple characters, unlike with module 1 which only had one character. 
+I utilized C++, creating multiple classes to initialize the animal characters themselves, as well as using inheritance
+in order to create the different types of moves that a player/cpu could use. The code is brought together with
+a main file which initializes all variables needed to make a character with multiple moves, executes the rock/paper/scissors
+standoff that kicks off each round, and constructs how a turn would look like for both a player and cpu.
 
 I hope you enjoy the Elite Animals RPG Battle Simulator :)
 
