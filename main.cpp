@@ -62,8 +62,10 @@ unique_ptr<Animal_Character> pierre_ch = make_unique<Animal_Character>("Pierre t
 //Default to Chuck
 Animal_Character player = *chuck_ch;
 Animal_Character cpu = *chuck_ch;
-int player_curr_mp = chuck_special_ab->get_mp();
-int cpu_curr_mp = chuck_special_ab->get_mp();
+int player_curr_special_mp = chuck_special_ab->get_mp();
+int player_curr_support_mp = chuck_support_ab->get_mp();
+int cpu_curr_special_mp = chuck_special_ab->get_mp();
+int cpu_curr_support_mp = chuck_support_ab->get_mp();
 double player_curr_hp = chuck_ch->get_HP();
 double cpu_curr_hp = chuck_ch->get_HP();
 
@@ -87,8 +89,8 @@ void player_turn() {
          *not displaying correctly, fix make sure to add (1) and (2)
          */
         cout << "(1) " << player.get_Melee_Ability().get_name() << " // DMG: " << player.get_Melee_Ability().get_lower_bound() << "-" << player.get_Melee_Ability().get_upper_bound() << endl;
-        cout << "(2) " << player.get_Special_Ability().get_name() << " // DMG: " << player.get_Special_Ability().get_dmg() << " // MP: " << player_curr_mp << "/" << player.get_Special_Ability().get_mp() << endl;
-        cout << "(3) " << player.get_Support_Ability().get_name() << " // Buff: " << player.get_Support_Ability().get_buff() << endl;
+        cout << "(2) " << player.get_Special_Ability().get_name() << " // DMG: " << player.get_Special_Ability().get_dmg() << " // MP: " << player_curr_special_mp << "/" << player.get_Special_Ability().get_mp() << endl;
+        cout << "(3) " << player.get_Support_Ability().get_name() << " // Buff: " << player.get_Support_Ability().get_buff() << " // MP: " << player_curr_support_mp << "/" << player.get_Support_Ability().get_mp() << endl;
         cout << "(4) " << "Display Detailed Information" << endl;
         cin >> player_choice;
         if (player_choice == "1" || player_choice == "2" || player_choice == "3") {
@@ -99,6 +101,8 @@ void player_turn() {
                 if(ssm_cpu_winner == "shield") {
                     cpu_curr_hp -= (player.get_Melee_Ability().get_dmg() * .25);
                     damage_dealt = player.get_Melee_Ability().get_dmg() * .25;
+                    cin.clear();
+                    break;
                 }
                 else{
                     cpu_curr_hp -= player.get_Melee_Ability().get_dmg();
@@ -118,12 +122,12 @@ void player_turn() {
                 /*
                  *if there is 0 mp left, then loop doesn't break and cin is cleared
                  */
-                if(player_curr_mp > 0) {
+                if(player_curr_special_mp > 0) {
                     //ssm shield advantage for cpu
                     if(ssm_cpu_winner == "shield") {
                         cpu_curr_hp -= (player.get_Special_Ability().get_dmg() * .25);
                         damage_dealt = player.get_Special_Ability().get_dmg() * .25;
-                        player_curr_mp--;
+                        player_curr_special_mp--;
                         cin.clear();
                         break;
                     }
@@ -134,7 +138,7 @@ void player_turn() {
                             cpu_curr_hp -= player.get_Special_Ability().get_dmg() *.2;
                             damage_dealt += player.get_Special_Ability().get_dmg() * .2;
                         }
-                        player_curr_mp--; //can subtract more, need to find efficient way for mp to regen?
+                        player_curr_special_mp--; //can subtract more, need to find efficient way for mp to regen?
                         cin.clear();
                         break;
                     }
@@ -142,16 +146,21 @@ void player_turn() {
             }
             //SUPPORT
             else if(player_choice == "3") {
-                ability_used = player.get_Support_Ability().get_name();
-                //does math of applying buff, returns correct value to curr_hp/curr_mp
-                if(player.get_Support_Ability().get_buff() == "HP") {
-                    player_curr_hp = player.get_Support_Ability().apply_buff(player_curr_hp, player_curr_mp);
+                if(player_curr_support_mp > 0){
+                    ability_used = player.get_Support_Ability().get_name();
+                    //does math of applying buff, returns correct value to curr_hp/curr_mp
+                    if(player.get_Support_Ability().get_buff() == "HP") {
+                        player_curr_hp = player.get_Support_Ability().apply_buff(player_curr_hp, player_curr_special_mp);
 
+
+                    }
+                    else {
+                        player_curr_special_mp = int(player.get_Support_Ability().apply_buff(player_curr_hp, player_curr_special_mp));
+                    }
+                    player_curr_support_mp--;
+                    cin.clear();
+                    break;
                 }
-                else {
-                    player_curr_mp = int(player.get_Support_Ability().apply_buff(player_curr_hp, player_curr_mp));
-                }
-                break;
             }
         }
         //INFO
@@ -203,8 +212,21 @@ void cpu_turn() {
     }
     //randomly choose between abilities (later can become more intelligent, ie focusing on healing when low health
     string cpu_choice = "null";
-    if(cpu_curr_mp == 0) {
-        cpu_choice = "1";
+    if(cpu_curr_special_mp == 0 || cpu_curr_support_mp == 0) {
+        if(cpu_curr_special_mp == 0 && cpu_curr_support_mp == 0){
+            cpu_choice = "1";
+        }
+        else if(cpu_curr_special_mp == 0){
+            int rand_two_nums = rand() % (2) + 1;
+            if(rand_two_nums == 2){
+                rand_two_nums = 3; //chooses support move, since this case would decide between melee (1) and support (3)
+            }
+            cpu_choice = to_string(rand_two_nums);
+        }
+        else{ //else case: if only support mp = 0
+            int rand_two_nums = rand() % (2) + 1; //chooses between melee (1) and special (2)
+            cpu_choice = to_string(rand_two_nums);
+        }
     }
     else {
         int random_number = rand() % (3) + 1;
@@ -240,17 +262,18 @@ void cpu_turn() {
                 damage_dealt += cpu.get_Special_Ability().get_dmg() * .2;
             }
         }
-        cpu_curr_mp--;
+        cpu_curr_special_mp--;
     }
     else if(cpu_choice == "3") {
         ability_used = cpu.get_Support_Ability().get_name();
         //does math of applying buff, returns correct value to curr_hp/curr_mp
         if(cpu.get_Support_Ability().get_buff() == "HP") {
-            cpu_curr_hp = cpu.get_Support_Ability().apply_buff(cpu_curr_hp, cpu_curr_mp);
+            cpu_curr_hp = cpu.get_Support_Ability().apply_buff(cpu_curr_hp, cpu_curr_special_mp);
         }
         else {
-            cpu_curr_mp = int(cpu.get_Support_Ability().apply_buff(cpu_curr_hp, cpu_curr_mp));
+            cpu_curr_special_mp = int(cpu.get_Support_Ability().apply_buff(cpu_curr_hp, cpu_curr_special_mp));
         }
+        cpu_curr_support_mp--;
     }
     //pause for 1 second
     std::this_thread::sleep_for(std::chrono::seconds(1));
@@ -329,31 +352,36 @@ void cpu_turn() {
             }
             if(char_selection == "2") {
                 player = *odin_ch;
-                player_curr_mp = odin_special_ab->get_mp();
+                player_curr_special_mp = odin_special_ab->get_mp();
+                player_curr_support_mp = odin_support_ab->get_mp();
                 player_curr_hp = odin_ch->get_HP();
                 break;
             }
             if(char_selection == "3") {
                 player = *screech_ch;
-                player_curr_mp = screech_special_ab->get_mp();
+                player_curr_special_mp = screech_special_ab->get_mp();
+                player_curr_support_mp = screech_support_ab->get_mp();
                 player_curr_hp = screech_ch->get_HP();
                 break;
             }
             if(char_selection == "4") {
                 player = *tabby_ch;
-                player_curr_mp = tabby_special_ab->get_mp();
+                player_curr_special_mp = tabby_special_ab->get_mp();
+                player_curr_support_mp = tabby_support_ab->get_mp();
                 player_curr_hp = tabby_ch->get_HP();
                 break;
             }
             if(char_selection == "5") {
                 player = *lucius_ch;
-                player_curr_mp = lucius_special_ab->get_mp();
+                player_curr_special_mp = lucius_special_ab->get_mp();
+                player_curr_support_mp = lucius_support_ab->get_mp();
                 player_curr_hp = lucius_ch->get_HP();
                 break;
             }
             if(char_selection == "6") {
                 player = *pierre_ch;
-                player_curr_mp = pierre_special_ab->get_mp();
+                player_curr_special_mp = pierre_special_ab->get_mp();
+                player_curr_support_mp = pierre_support_ab->get_mp();
                 player_curr_hp = pierre_ch->get_HP();
                 break;
             }
@@ -366,27 +394,32 @@ void cpu_turn() {
         }
         else if(cpu_char_picker == 2) {
             cpu = *odin_ch;
-            cpu_curr_mp = odin_special_ab->get_mp();
+            cpu_curr_special_mp = odin_special_ab->get_mp();
+            cpu_curr_support_mp = odin_support_ab->get_mp();
             cpu_curr_hp = odin_ch->get_HP();
         }
         else if(cpu_char_picker == 3) {
             cpu = *screech_ch;
-            cpu_curr_mp = screech_special_ab->get_mp();
+            cpu_curr_special_mp = screech_special_ab->get_mp();
+            cpu_curr_support_mp = screech_support_ab->get_mp();
             cpu_curr_hp = screech_ch->get_HP();
         }
         else if(cpu_char_picker == 4) {
             cpu = *tabby_ch;
-            cpu_curr_mp = tabby_special_ab->get_mp();
+            cpu_curr_special_mp = tabby_special_ab->get_mp();
+            cpu_curr_support_mp = tabby_support_ab->get_mp();
             cpu_curr_hp = tabby_ch->get_HP();
         }
         if(cpu_char_picker == 5) {
             cpu = *lucius_ch;
-            cpu_curr_mp = lucius_special_ab->get_mp();
+            cpu_curr_special_mp = lucius_special_ab->get_mp();
+            cpu_curr_support_mp = lucius_support_ab->get_mp();
             cpu_curr_hp = lucius_ch->get_HP();
         }
         if(cpu_char_picker == 6) {
             cpu = *pierre_ch;
-            cpu_curr_mp = pierre_special_ab->get_mp();
+            cpu_curr_special_mp = pierre_special_ab->get_mp();
+            cpu_curr_support_mp = pierre_support_ab->get_mp();
             cpu_curr_hp = pierre_ch->get_HP();
         }
         cout << "You chose: " << player.get_name() << "!" << endl;

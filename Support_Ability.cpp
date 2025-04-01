@@ -48,5 +48,5 @@ double Support_Ability::apply_buff(double curr_hp, int curr_mp){
   }
 }
 string Support_Ability::display_string(){
-  return "Support Ability: " + name + "\n" + "Buff: " + buff + "\n" + "Description: " + description + "\n";
+  return "Support Ability: " + name + "\n" + "Buff: " + buff + "\n" + "MP: " + to_string(mp) + "/" + to_string(mp) + "\n" + "Description: " + description + "\n";
 }
