@@ -1,0 +1,3 @@
+C:/Users/mmjaj/CLionProjects/Animal-RPG-Simulator/cmake-build-debug/CMakeFiles/Animal-RPG-Simulator.dir
+C:/Users/mmjaj/CLionProjects/Animal-RPG-Simulator/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/mmjaj/CLionProjects/Animal-RPG-Simulator/cmake-build-debug/CMakeFiles/rebuild_cache.dir
