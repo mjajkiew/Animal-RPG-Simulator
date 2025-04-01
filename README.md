@@ -12,7 +12,7 @@ Melee attacks cover a range of attack damage that can skew up or down randomly t
 Special attacks work like they do in many other RPGs, with a limited amount of uses, with each use draining MP.
 Support moves increase HP or Special MP, with its uses also limited by its own MP.
 
-I utilized C++, creating multiple classes to initialize the animal characters themselves, as well as using inheritance
+I utilized C++ within the CLion IDE, creating multiple classes to initialize the animal characters themselves, as well as using inheritance
 in order to create the different types of moves that a player/cpu could use. The code is brought together with
 a main file which initializes all variables needed to make a character with multiple moves, executes the rock/paper/scissors
 standoff that kicks off each round, and constructs how a turn would look like for both a player and cpu.
