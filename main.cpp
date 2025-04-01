@@ -22,23 +22,42 @@ string ssm_player_winner;
 string ssm_cpu_winner;
 bool game_start = true;
 //Characters:
-//Chuck
+//Chuck the Horse
 unique_ptr<Melee_Ability> chuck_melee_ab = make_unique<Melee_Ability>("Colossal Stomp", "A Huge Stomp That Shatters The Ground", 60, 90);
 unique_ptr<Special_Ability> chuck_special_ab = make_unique<Special_Ability>("Maximum Horsepower", "Full force attack on the opponent", 80, 5);
 unique_ptr<Support_Ability> chuck_support_ab = make_unique<Support_Ability>("Equine Meditation", "A short rest that restores 25 HP", "HP", 300, 5, 25);
 unique_ptr<Animal_Character> chuck_ch = make_unique<Animal_Character>("Chuck the Horse", 300, "A powerful kickboxing horse unlike any other!", *chuck_melee_ab, *chuck_special_ab, *chuck_support_ab);
 
-//Odin
+//Odin the Otter
 unique_ptr<Melee_Ability> odin_melee_ab = make_unique<Melee_Ability>("Ravage Pierce", "Devastating Stab with a Spear", 40, 95);
 unique_ptr<Special_Ability> odin_special_ab = make_unique<Special_Ability>("Bursting Waves", "Pushes a Gigantic Wave Against the Opponent", 90, 2);
 unique_ptr<Support_Ability> odin_support_ab = make_unique<Support_Ability>("Soothing Aqua", "Use the power of water to heal 30 HP", "HP", 280, 2, 30);
 unique_ptr<Animal_Character> odin_ch = make_unique<Animal_Character>("Odin the Otter", 310, "An otter warrior trained in the art of the spear!", *odin_melee_ab, *odin_special_ab, *odin_support_ab);
 
-//Screech
+//Screech the Bat
 unique_ptr<Melee_Ability> screech_melee_ab = make_unique<Melee_Ability>("Hell Bite", "A Deep Bite That Aches For Years", 60, 75);
 unique_ptr<Special_Ability> screech_special_ab = make_unique<Special_Ability>("Everlasting Scream", "A Scream so Loud It Bursts Most Organism's Eardrums", 180, 1);
 unique_ptr<Support_Ability> screech_support_ab = make_unique<Support_Ability>("Rejuvenating Rations", "A stockpile of rations which restores 1 MP", "MP", 280, 1, 1);
 unique_ptr<Animal_Character> screech_ch = make_unique<Animal_Character>("Screech the Bat", 280, "A lone cave dwelling bat with unparalleled power!", *screech_melee_ab, *screech_special_ab, *screech_support_ab);
+
+//Tabby the Kangaroo
+unique_ptr<Melee_Ability> tabby_melee_ab = make_unique<Melee_Ability>("Double Spring Kick", "Two Kicks From High in the Sky", 20, 90);
+unique_ptr<Special_Ability> tabby_special_ab = make_unique<Special_Ability>("Kitchen Mayhem", "A Flurry of Pots and Pans Flung to the Opponent", 78, 3);
+unique_ptr<Support_Ability> tabby_support_ab = make_unique<Support_Ability>("Joey's Jewel", "A special gem from the joey which restores 2 MP", "MP", 320, 1, 2);
+unique_ptr<Animal_Character> tabby_ch = make_unique<Animal_Character>("Tabby the Kangaroo", 320, "An kangaroo mom and her joey who live an ordinary life!", *tabby_melee_ab, *tabby_special_ab, *tabby_support_ab);
+
+//Lucius the Raccoon
+unique_ptr<Melee_Ability> lucius_melee_ab = make_unique<Melee_Ability>("Stealthy Stab", "A Deep Stab From Nowhere", 80, 115);
+unique_ptr<Special_Ability> lucius_special_ab = make_unique<Special_Ability>("Silent Grenade", "An Explosion that Seemingly Makes No Noise", 110, 2);
+unique_ptr<Support_Ability> lucius_support_ab = make_unique<Support_Ability>("Hidden Feast", "Some snacks hidden in a coat that restores 20 HP", "HP", 290, 3, 20);
+unique_ptr<Animal_Character> lucius_ch = make_unique<Animal_Character>("Lucius the Raccoon", 290, "A raccoon assassin who's known to be the best in business!", *lucius_melee_ab, *lucius_special_ab, *lucius_support_ab);
+
+//Pierre the Penguin
+unique_ptr<Melee_Ability> pierre_melee_ab = make_unique<Melee_Ability>("Cold Slap", "A Harsh Slap That Leaves Bruises", 75, 100);
+unique_ptr<Special_Ability> pierre_special_ab = make_unique<Special_Ability>("Frozen Beats", "Pure Sound Waves formed into Chilling Ice", 100, 1);
+unique_ptr<Support_Ability> pierre_support_ab = make_unique<Support_Ability>("Snowy Ambience", "The relaxing sounds of an ice cave that heals 30 HP", "HP", 350, 3, 30);
+unique_ptr<Animal_Character> pierre_ch = make_unique<Animal_Character>("Pierre the Penguin", 350, "A penguin DJ who can create awesome songs in seconds!", *pierre_melee_ab, *pierre_special_ab, *pierre_support_ab);
+
 
 //Default to Chuck
 Animal_Character player = *chuck_ch;
@@ -284,6 +303,24 @@ void cpu_turn() {
         cout << screech_ch->get_Special_Ability().display_string() << endl;
         cout << screech_ch->get_Support_Ability().display_string() << endl;
         cout << "----------------------------------------" << endl;
+        cout << "(4) " << tabby_ch->get_name() << endl;
+        cout << "~" << tabby_ch->get_description() << "~" << endl;
+        cout << tabby_ch->get_Melee_Ability().display_string() << endl;
+        cout << tabby_ch->get_Special_Ability().display_string() << endl;
+        cout << tabby_ch->get_Support_Ability().display_string() << endl;
+        cout << "----------------------------------------" << endl;
+        cout << "(5) " << lucius_ch->get_name() << endl;
+        cout << "~" << lucius_ch->get_description() << "~" << endl;
+        cout << lucius_ch->get_Melee_Ability().display_string() << endl;
+        cout << lucius_ch->get_Special_Ability().display_string() << endl;
+        cout << lucius_ch->get_Support_Ability().display_string() << endl;
+        cout << "----------------------------------------" << endl;
+        cout << "(6) " << pierre_ch->get_name() << endl;
+        cout << "~" << pierre_ch->get_description() << "~" << endl;
+        cout << pierre_ch->get_Melee_Ability().display_string() << endl;
+        cout << pierre_ch->get_Special_Ability().display_string() << endl;
+        cout << pierre_ch->get_Support_Ability().display_string() << endl;
+        cout << "----------------------------------------" << endl;
         while(true) {
             cin >> char_selection;
             if(char_selection == "1") {
@@ -302,10 +339,28 @@ void cpu_turn() {
                 player_curr_hp = screech_ch->get_HP();
                 break;
             }
+            if(char_selection == "4") {
+                player = *tabby_ch;
+                player_curr_mp = tabby_special_ab->get_mp();
+                player_curr_hp = tabby_ch->get_HP();
+                break;
+            }
+            if(char_selection == "5") {
+                player = *lucius_ch;
+                player_curr_mp = lucius_special_ab->get_mp();
+                player_curr_hp = lucius_ch->get_HP();
+                break;
+            }
+            if(char_selection == "6") {
+                player = *pierre_ch;
+                player_curr_mp = pierre_special_ab->get_mp();
+                player_curr_hp = pierre_ch->get_HP();
+                break;
+            }
             cout << "Invalid Input, Please Try Again" << endl;
             cin.clear();
         }
-        int cpu_char_picker = (rand()%3) + 1;
+        int cpu_char_picker = (rand()%6) + 1;
         if(cpu_char_picker == 1) {
             //chuck is default
         }
@@ -318,6 +373,21 @@ void cpu_turn() {
             cpu = *screech_ch;
             cpu_curr_mp = screech_special_ab->get_mp();
             cpu_curr_hp = screech_ch->get_HP();
+        }
+        else if(cpu_char_picker == 4) {
+            cpu = *tabby_ch;
+            cpu_curr_mp = tabby_special_ab->get_mp();
+            cpu_curr_hp = tabby_ch->get_HP();
+        }
+        if(cpu_char_picker == 5) {
+            cpu = *lucius_ch;
+            cpu_curr_mp = lucius_special_ab->get_mp();
+            cpu_curr_hp = lucius_ch->get_HP();
+        }
+        if(cpu_char_picker == 6) {
+            cpu = *pierre_ch;
+            cpu_curr_mp = pierre_special_ab->get_mp();
+            cpu_curr_hp = pierre_ch->get_HP();
         }
         cout << "You chose: " << player.get_name() << "!" << endl;
         cout << "CPU chose: " << cpu.get_name() << "! \n" << endl;
